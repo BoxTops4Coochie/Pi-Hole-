@@ -199,3 +199,7 @@ youtu.be
 youtube-nocookie.com
 yt3.ggpht.com
 zee.cws.conviva.com
+ark.tubi.video
+go.microsoft.com
+links.customers.instacartemail.com
+webto.salesforce.com

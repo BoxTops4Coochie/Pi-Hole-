@@ -9,3 +9,7 @@ proxyjs.luminatinet.com
 proxyjs.bright-sdk.com
 clientsdk.bright-sdk.com
 clientsdk.brdtnet.com
+ark.tubi.video
+prod-3-realtime-lb-840806869.us-east-1.elb.amazonaws.com
+www.huntress.com
+bag-cdn-akam.itunes-apple.com.akadns.net

@@ -20,9 +20,7 @@ The engine serves one workload shape all day: **autonomous agent tasks** — hom
 | Output tokens (total) | **212.5 k** | **134.8 k** |
 | Prompt tok/req (mean) | ~159,149 | ~103,523 |
 | Output tok/req (mean) | ~672 | ~621 |
-| Wall time | hours of accumulated agent traffic | raids, benches, fix/verify coding + live traffic |
 
-Volume is deliberately one order larger on MTP (full-day accumulation vs a focused DFlash leg); all efficiency rows below are per-request means, which normalize for volume.
 
 ## Engine-wide performance comparison (vLLM Prometheus, ground truth)
 

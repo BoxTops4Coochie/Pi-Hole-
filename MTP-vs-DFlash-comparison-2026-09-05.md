@@ -8,7 +8,7 @@ The engine serves one workload shape all day: **autonomous agent tasks** — hom
 | | MTP baseline | DFlash2 run |
 |---|---|---|
 | Speculator | built-in MTP heads, **depth 3** | external **DFlash2** (drafter weights: `models--local-inference-lab--GLM-5.3-Flash-DFlash2`, ~1.2 GB on disk), **depth 7** |
-| Traffic type | agent tasks (homelab ops / coding / cron) | same agent-task mix + deterministic bug-hunt raids + benches for parity |
+| Traffic type | agent tasks (homelab ops / coding / cron) and deterministic bug-hunt raids| same agent-task mix  |
 | Power caps | 3×300 W | 3×300 W (unchanged) |
 
 ## Workload volume — what each config processed

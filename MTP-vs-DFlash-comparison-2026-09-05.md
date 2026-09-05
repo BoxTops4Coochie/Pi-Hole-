@@ -1,5 +1,5 @@
 # GLM-5.3-Flash-TP3 — MTP vs DFlash2 Comparison (Homelab Agent Workload)
-**Date:** 2026-09-05 · **Engine host:** 0.8 (Threadripper 7965WX, 3× RTX PRO 6000, TP3) · **Endpoint:** 0.8:15015 · **Model:** `local-inference-lab/GLM-5.3-Flash-NVFP4` (1M ctx) · **Driver image:** `infernix/vllm:glm53-r21-tp3-qualified-…recipe01…` (v198 compose)
+**Date:** 2026-09-05 · **Engine host:** 0.8 (Threadripper 7965WX, 3× RTX PRO 6000, TP3) · **Endpoint:** 0.8:15015 · **Model:** `local-inference-lab/GLM-5.3-Flash-NVFP4` (1M ctx) · **Driver image:** `infernix/vllm:glm53-r21-tp3-qualified-…recipe01…` 
 
 The engine serves one workload shape all day: **autonomous agent tasks** — homelab management (server ops, Docker, network/firewall changes, CI), coding (repo audits, patches, reviews), research/summarization, and scheduled crons. Both configs measured under exactly that traffic.
 

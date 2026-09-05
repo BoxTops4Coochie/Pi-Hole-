@@ -56,10 +56,8 @@ Note on comparability: both legs are compared on per-request means across agent-
 Validated during the DFlash leg — no host-side confounders: 0.2 idle (load 0.7, 37 % disk, 20/20 containers healthy) and 0.8 nominal (load ≤4/64, vLLM /health ✓, TP workers 271–275 W each ≤300 W cap, 36–40 °C, Mullvad + killswitch active). Neither leg's numbers were distorted by host contention.
 
 ## Provenance
-- `model-runs/baseline_glm53_tp3_metrics_20260905.txt` — MTP era, n≈316 (pre-restart)
-- `dflash_glm53_metrics_20260905_1337.txt` (virgin) → `post_bench` (n=20) → `post_bench2` (n=53) → `post_bench3` (n=114) → `post_bench4` (n=167) → `dflash_glm53_post_fixes_20260905.txt` (**final, n=217 — all comparison rows**)
-- Benches: ① 6× 256-tok fixed prompts; ② context balancing — 12× 384-tok + 6× ~109k-token + 2× 1,024-tok long-decode; ③ workload sourcing — 8× audit-report analysis + 36× repo-source review prompts; ④ **bug-hunt raids (n=53)** — 2× full 6k-line `ChatViewModel.swift` audits + 10 targeted slices (APIClient, SSEClient, composer text view, CacheStore, Live Activity manager, ChatView, TranscriptView, SessionList, StreamCoordinator, ComposerView), outputs archived in `raid4-outputs/`; ⑤ **fix/verify session (n=50)** — the two raid-finding fixes committed as `c8a1f75` (composer focus true-cancel + pagination-aware cache staleness), with the fix-diff reasoning, patch verification, and CI dispatch all run as live agent traffic through this same engine. Metrics from ④ and ⑤ count toward the DFlash totals per plan.
-- All benches temp 0, no tools, sequential with short spacing; live agent traffic interleaved throughout
+-  8× audit-report analysis + 36× repo-source review prompts; ④ **bug-hunt raids
+** — 2× full 6k-line `ChatViewModel.swift` audits + 10 targeted slices (APIClient, SSEClient, composer text view, CacheStore, Live Activity manager, ChatView, TranscriptView, SessionList, StreamCoordinator, ComposerView), outputs archived in `raid4-outputs/`; ⑤ **fix/verify session ** — the two raid-finding fixes committed as `c8a1f75` (composer focus true-cancel + pagination-aware cache staleness), with the fix-diff reasoning, patch verification, and CI dispatch all run as live agent traffic through this same engine. Metrics from ④ and ⑤ count toward the DFlash totals per 
 
 ## Raid 4 — actual bug findings on the Hermex source (both headline fixes shipped)
 The raids were run as real analysis, not just metric fodder. Selected claims, checked against source — and the two actionable ones are now FIXED (commit `c8a1f75`, builds pending):

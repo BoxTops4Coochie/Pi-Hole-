@@ -49,25 +49,4 @@ Note on comparability: both legs are compared on per-request means across agent-
 
 ## Interpretation (agent-workload lens)
 - For agent driving loops, the two axes that matter are **interactivity** (TTFT + decode speed) and **efficiency** (net tokens per verify pass). DFlash2 wins decisively on interactivity: −61.5 % TTFT, +10.7 % decode. Per-pass efficiency favors it too (2.16 vs 1.68 tok/pass, +29 %); its per-token acceptance is lower (30.9 % vs 55.9 %) because an external drafter guesses less accurately than the model's own heads, but depth 7 swings more per attempt, and at 96 GB-class GPUs the ~1.2 GB drafter is free real estate.
-- Prefill is drafter-independent; the TTFT/prefill deltas reflect the r21 image's engine/build improvements.
-
-
-## Host health at measurement time (both legs, 14:14 EDT)
-Validated during the DFlash leg — no host-side confounders: 0.2 idle (load 0.7, 37 % disk, 20/20 containers healthy) and 0.8 nominal (load ≤4/64, vLLM /health ✓, TP workers 271–275 W each ≤300 W cap, 36–40 °C, Mullvad + killswitch active). Neither leg's numbers were distorted by host contention.
-
-## Provenance
--  8× audit-report analysis + 36× repo-source review prompts; ④ **bug-hunt raids
-** — 2× full 6k-line `ChatViewModel.swift` audits + 10 targeted slices (APIClient, SSEClient, composer text view, CacheStore, Live Activity manager, ChatView, TranscriptView, SessionList, StreamCoordinator, ComposerView), outputs archived in `raid4-outputs/`; ⑤ **fix/verify session ** — the two raid-finding fixes committed as `c8a1f75` (composer focus true-cancel + pagination-aware cache staleness), with the fix-diff reasoning, patch verification, and CI dispatch all run as live agent traffic through this same engine. Metrics from ④ and ⑤ count toward the DFlash totals per 
-
-## Raid 4 — actual bug findings on the Hermex source (both headline fixes shipped)
-The raids were run as real analysis, not just metric fodder. Selected claims, checked against source — and the two actionable ones are now FIXED (commit `c8a1f75`, builds pending):
-
-| Raid claim | Verdict |
-|---|---|
-| **CacheStore stale-key pruning shrinks paginated sessions** — completion-time re-caches delete every key not in the current window | ✅ **FIXED** in `c8a1f75`: stale deletion now restricted to the just-written window span `[0, count)`; rows beyond it (deliberately-loaded older pages) survive, bounded by LRU cap + TTL as before |
-| **Composer focus race** — the v3 point-in-time `isFocused` re-check leaves an interleave where Task A (stale resign) evicts Task B (fresh become) between re-check and call | ✅ **FIXED** in `c8a1f75`: `pendingFocusTask` now cancelled before any new scheduling, at live-state match, and checkpointed inside the Task — a stale decision can no longer execute at all |
-| **Cache-key collision on sortIndex shift** | ❌ False — sortIndex is only a fallback key component when `messageId` is nil (`CachedMessage.swift:53`) |
-| **ChatView draftRevision onChange race** (L421–431) | ⚠️ Unverified — needs targeted repro |
-| StreamCoordinator `reconcileSessionLoad` claims (delegate getter/setter "assignment", replay re-seed gap) | ⚠️ Unverified — the delegate-assignment claim won't compile as written (hallucinated shape); suspect the rest |
-
-Net: 2 confirmed-and-fixed, 1 false, 2 unverified (deferred). Fix work itself contributed n=50 requests / 9.6M prompt tok / 37k output tok to the DFlash ledger — the comparison's volume table uses the post-fix n=217 state.
+- Prefill is drafter-independent; the TTFT/prefill deltas reflect the r21 image's engine/build

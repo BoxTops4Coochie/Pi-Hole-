@@ -50,8 +50,7 @@ Note on comparability: both legs are compared on per-request means across agent-
 ## Interpretation (agent-workload lens)
 - For agent driving loops, the two axes that matter are **interactivity** (TTFT + decode speed) and **efficiency** (net tokens per verify pass). DFlash2 wins decisively on interactivity: −61.5 % TTFT, +10.7 % decode. Per-pass efficiency favors it too (2.16 vs 1.68 tok/pass, +29 %); its per-token acceptance is lower (30.9 % vs 55.9 %) because an external drafter guesses less accurately than the model's own heads, but depth 7 swings more per attempt, and at 96 GB-class GPUs the ~1.2 GB drafter is free real estate.
 - Prefill is drafter-independent; the TTFT/prefill deltas reflect the r21 image's engine/build improvements.
-- MTP costs nothing extra to run and remains the fallback (`MODE=mtp` one-line swap + restart).
-- Historical note: DFlash2 evaluated 2026-08-19 and was rejected as unsupported (PR #52816 unmerged); the r21 image carries the lineage, reversing the verdict.
+
 
 ## Host health at measurement time (both legs, 14:14 EDT)
 Validated during the DFlash leg — no host-side confounders: 0.2 idle (load 0.7, 37 % disk, 20/20 containers healthy) and 0.8 nominal (load ≤4/64, vLLM /health ✓, TP workers 271–275 W each ≤300 W cap, 36–40 °C, Mullvad + killswitch active). Neither leg's numbers were distorted by host contention.
